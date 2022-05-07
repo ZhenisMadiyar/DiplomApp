@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">DiplomApp</string>
+    <string name="problem_occurred">Произошло ошибка, повторите потом</string>
+    <string name="test_desc">You can use either Kotlin Flow or LiveData to implement an observer pattern, but in this article, I am going to show how to use Kotlin Flow to do this. In fact, I would recommend migrating from LiveData to Kotlin Flow as it is much more flexible.</string>
+    <string name="category">Категория</string>
+    <string name="call">Позвонить</string>
+    <string name="create_post">Создать пост</string>
+    <string name="title">Название</string>
+    <string name="desc">Описание</string>
+    <string name="price">Цена</string>
+    <string name="create">Создать</string>
+    <string name="empty_category">Пустая категория, пожалуйста, создайте объявление</string>
+    <string name="empty_favourite_list">Вы еще не добавили в избранные</string>
+    <string name="empty_subcategory">Пустая категория</string>
+    <string name="successfully_added">Успешно добавлено</string>
+    <string name="loading">Загрузка</string>
+    <string name="please_update_photo">Пожалуйста, загрузите фото</string>
+    <string name="empty_price">Заполните полю Цена</string>
+    <string name="empty_desc">Заполните полю Описание</string>
+    <string name="empty_title">Заполните полю Название</string>
+</resources>
