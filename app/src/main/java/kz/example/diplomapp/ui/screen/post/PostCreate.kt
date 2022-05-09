@@ -25,7 +25,9 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
 import kz.example.diplomapp.R
 import kz.example.diplomapp.common.UiState
-import kz.example.diplomapp.ui.CategoryList
+import kz.example.diplomapp.domain.model.Category
+import kz.example.diplomapp.ui.screen.LoadingScreen
+import kz.example.diplomapp.ui.screen.category.DictList
 import kz.example.diplomapp.ui.screen.common.ErrorDialog
 import kz.example.diplomapp.ui.screen.main.MainViewModel
 import java.time.LocalDate
@@ -77,20 +79,42 @@ fun PostCreate(
     var thumb by remember {
         mutableStateOf("")
     }
+    var selectedCategory: Category? by remember {
+        mutableStateOf(null)
+    }
+    var selectedSubCategory: Category? by remember {
+        mutableStateOf(null)
+    }
+    var isSubCategory: Boolean = false
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
-            CategoryList(viewModel = categoryViewModel, navController = navController)
-//            Box(
-//                Modifier
-//                    .fillMaxWidth()
-//                    .height(600.dp)
-//                    .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
-//            ) {
-//                Text(text = "Hello from sheet")
-//            }
+            LaunchedEffect(bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                if (isSubCategory) {
+                    categoryViewModel.getSubCategory(selectedCategory?.documentId ?: "")
+                } else {
+                    categoryViewModel.getCategory()
+                }
+            }
+            when (val state = categoryViewModel.uiState.collectAsState().value) {
+                is UiState.Loading -> {
+                    LoadingScreen()
+                }
+                is UiState.Success<*> -> {
+                    DictList(state.list as List<Category>) {
+                        if (isSubCategory) selectedSubCategory = it
+                        else selectedCategory = it
+                        coroutineScope.launch {
+                            bottomSheetScaffoldState.bottomSheetState.collapse()
+                        }
+                    }
+                }
+                is UiState.Error -> {
+                    ErrorDialog(message = state.exception.toString())
+                }
+            }
         },
-        sheetPeekHeight = 0.dp
+        sheetPeekHeight = 60.dp
     ) {
         Column(
             Modifier
@@ -126,6 +150,8 @@ fun PostCreate(
                     .fillMaxWidth()
                     .height(48.dp),
                 onClick = {
+                    isSubCategory = false
+                    selectedSubCategory = null
                     coroutineScope.launch {
                         if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
                             bottomSheetScaffoldState.bottomSheetState.expand()
@@ -134,7 +160,27 @@ fun PostCreate(
                         }
                     }
                 }) {
-                Text(text = "Категория")
+                Text(text = selectedCategory?.title ?: stringResource(R.string.select_category))
+            }
+
+            if (selectedCategory != null) {
+                Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
+                OutlinedButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    onClick = {
+                        isSubCategory = true
+                        coroutineScope.launch {
+                            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                                bottomSheetScaffoldState.bottomSheetState.expand()
+                            } else {
+                                bottomSheetScaffoldState.bottomSheetState.collapse()
+                            }
+                        }
+                    }) {
+                    Text(text = selectedSubCategory?.title ?: stringResource(R.string.select_subcategory))
+                }
             }
             Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
             Button(modifier = Modifier.fillMaxWidth(), onClick = {

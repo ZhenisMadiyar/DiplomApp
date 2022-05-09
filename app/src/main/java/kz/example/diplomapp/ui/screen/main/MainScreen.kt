@@ -16,6 +16,7 @@ import kz.example.diplomapp.common.NavRoutes
 import kz.example.diplomapp.common.NavRoutes.*
 import kz.example.diplomapp.ui.screen.main.AppNavGraph
 
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {

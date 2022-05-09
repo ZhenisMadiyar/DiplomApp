@@ -18,4 +18,6 @@
     <string name="empty_price">Заполните полю Цена</string>
     <string name="empty_desc">Заполните полю Описание</string>
     <string name="empty_title">Заполните полю Название</string>
+    <string name="select_subcategory">Выберите подкатегория</string>
+    <string name="select_category">Выберите категория</string>
 </resources>
