@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -48,13 +47,12 @@ fun PostList(
     viewModel: PostViewModel,
     navController: NavHostController,
     documentId: String,
-    categoryName: String
+    categoryName: String,
+    parentDocumentId: String
 ) {
 
-    val context = LocalContext.current
-
     LaunchedEffect(Unit) {
-        viewModel.getPostList(documentId)
+        viewModel.getPostList(documentId, parentDocumentId)
         Log.i("Opened post list", "POST_LIST")
     }
     Scaffold(

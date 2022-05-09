@@ -15,6 +15,7 @@
     <string name="successfully_added">Успешно добавлено</string>
     <string name="loading">Загрузка</string>
     <string name="please_update_photo">Пожалуйста, загрузите фото</string>
+    <string name="empty_category2">Пожалуйста, выберите категорию</string>
     <string name="empty_price">Заполните полю Цена</string>
     <string name="empty_desc">Заполните полю Описание</string>
     <string name="empty_title">Заполните полю Название</string>

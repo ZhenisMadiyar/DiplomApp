@@ -11,6 +11,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.firebase.firestore.FieldValue
@@ -142,6 +144,7 @@ fun PostCreate(
                 onValueChange = { priceValue -> price = priceValue },
                 label = { Text(text = stringResource(R.string.price)) },
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
@@ -222,10 +225,10 @@ fun PostCreate(
                             Toast.LENGTH_SHORT
                         ).show()
                         return@Button
-                    } else if (thumb == "") {
+                    } else if (selectedCategory == null || selectedSubCategory == null) {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.please_update_photo),
+                            context.getString(R.string.empty_category2),
                             Toast.LENGTH_SHORT
                         ).show()
                         return@Button
@@ -244,8 +247,8 @@ fun PostCreate(
                         "createdDate" to FieldValue.serverTimestamp()
                     )
                     postViewModel.createPost(
-                        "categoryDocumentId",
-                        "subCategoryDocumentId",
+                        selectedCategory?.documentId!!,
+                        selectedSubCategory?.documentId!!,
                         postData
                     )
 
@@ -275,7 +278,6 @@ fun PostCreate(
                         stringResource(R.string.successfully_added),
                         Toast.LENGTH_SHORT
                     ).show()
-                    navController.popBackStack()
                 }
                 is UiState.Error -> {
                     Log.w("Failure creating", state.exception.toString())

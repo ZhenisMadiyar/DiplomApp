@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import kz.example.diplomapp.R
 import kz.example.diplomapp.common.NavRoutes
 import kz.example.diplomapp.common.NavRoutes.*
 import kz.example.diplomapp.ui.screen.main.AppNavGraph
@@ -60,7 +58,7 @@ fun RowScope.AddItem(
 
     BottomNavigationItem(
         label = {
-            Text(text = stringResource(id = R.string.category))
+            Text(text = screen.title)
         },
         icon = {
             Icon(screen.icon!!, "")

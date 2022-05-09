@@ -19,10 +19,10 @@ class PostViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Empty)
     val uiState: StateFlow<UiState> = _uiState
 
-    fun getPostList(documentId: String) {
+    fun getPostList(documentId: String, parentDocumentId: String) {
         _uiState.value = UiState.Loading
         viewModelScope.launch {
-            repo.getPostList(documentId)
+            repo.getPostList(documentId, parentDocumentId)
                 .catch {
                     _uiState.value = UiState.Error(it)
                 }

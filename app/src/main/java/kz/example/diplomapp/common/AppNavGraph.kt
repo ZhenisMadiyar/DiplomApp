@@ -69,6 +69,9 @@ fun AppNavGraph(navController: NavHostController) {
                 },
                 navArgument(NavRoutes.PostList.EXTRA_CATEGORY_NAME) {
                     type = NavType.StringType
+                },
+                navArgument(NavRoutes.PostList.EXTRA_PARENT_CATEGORY_ID) {
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
@@ -77,7 +80,10 @@ fun AppNavGraph(navController: NavHostController) {
                     ?: return@composable
             val categoryName =
                 backStackEntry.arguments?.getString(NavRoutes.PostList.EXTRA_CATEGORY_NAME)
-            PostList(hiltViewModel(), navController, documentId, categoryName ?: "")
+            val parentDocumentId =
+                backStackEntry.arguments?.getString(NavRoutes.PostList.EXTRA_PARENT_CATEGORY_ID)
+                    ?: return@composable
+            PostList(hiltViewModel(), navController, documentId, categoryName ?: "", parentDocumentId)
         }
 
         composable(

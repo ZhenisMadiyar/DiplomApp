@@ -12,9 +12,11 @@ class PostRepoImpl : PostRepo {
 
     private val firestore = FirebaseFirestore.getInstance()
 
-    override suspend fun getPostList(categoryId: String): Flow<List<Post>> = callbackFlow {
+    override suspend fun getPostList(categoryId: String, parentDocumentId: String): Flow<List<Post>> = callbackFlow {
 
         val event = firestore.collection(Const.CATEGORY_COLLECTION)
+            .document(parentDocumentId)
+            .collection(Const.SUBCATEGORY_COLLECTION)
             .document(categoryId)
             .collection(Const.POST_COLLECTION)
 
@@ -28,14 +30,14 @@ class PostRepoImpl : PostRepo {
     }
 
     override suspend fun createPost(
-        subDocumentId: String,
         documentId: String,
+        subDocumentId: String,
         postData: HashMap<String, Any>
     ): Flow<Boolean> = callbackFlow {
         firestore.collection(Const.CATEGORY_COLLECTION)
-            .document(subDocumentId)
-            .collection(Const.SUBCATEGORY_COLLECTION)
             .document(documentId)
+            .collection(Const.SUBCATEGORY_COLLECTION)
+            .document(subDocumentId)
             .collection(Const.POST_COLLECTION)
             .add(postData)
             .addOnSuccessListener {

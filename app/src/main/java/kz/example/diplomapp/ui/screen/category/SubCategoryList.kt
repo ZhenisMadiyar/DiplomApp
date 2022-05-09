@@ -90,7 +90,7 @@ fun SubCategoryList(
                         }
                     }
                 } else {
-                    SubCategoryListLoaded(data, navController, contentPadding)
+                    SubCategoryListLoaded(data, navController, contentPadding, categoryId)
                 }
             }
             is UiState.Error -> {
@@ -104,7 +104,8 @@ fun SubCategoryList(
 fun SubCategoryListLoaded(
     categoryList: List<Category>,
     navController: NavHostController,
-    contentPadding: PaddingValues
+    contentPadding: PaddingValues,
+    parentCategoryId: String
 ) {
         LazyColumn(Modifier.padding(contentPadding)) {
             categoryList.forEach { categoryItem ->
@@ -116,7 +117,7 @@ fun SubCategoryListLoaded(
                             },
                             indication = rememberRipple(bounded = true),
                             onClick = {
-                                navController.navigate("${NavRoutes.PostList.route}/${categoryItem.documentId}/${categoryItem.title}")
+                                navController.navigate("${NavRoutes.PostList.route}/${categoryItem.documentId}/${categoryItem.title}/$parentCategoryId")
                             }
                         )) {
                             Row(
