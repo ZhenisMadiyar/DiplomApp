@@ -49,4 +49,27 @@ class PostRepoImpl : PostRepo {
 
         awaitClose { close() }
     }
+
+    override suspend fun editPost(
+        documentId: String,
+        subDocumentId: String,
+        postDocumentId: String,
+        postData: HashMap<String, Any>
+    ): Flow<Boolean> = callbackFlow {
+        firestore.collection(Const.CATEGORY_COLLECTION)
+            .document(documentId)
+            .collection(Const.SUBCATEGORY_COLLECTION)
+            .document(subDocumentId)
+            .collection(Const.POST_COLLECTION)
+            .document(postDocumentId)
+            .update(postData)
+            .addOnSuccessListener {
+                trySend(true)
+            }
+            .addOnFailureListener {
+                trySend(false)
+            }
+
+        awaitClose { close() }
+    }
 }

@@ -114,7 +114,7 @@ fun PostList(
                         }
                     }
                 } else {
-                    PostListLoaded(data, navController, categoryName, contentPadding)
+                    PostListLoaded(data, navController, categoryName, contentPadding, parentDocumentId, documentId)
                 }
             }
             is UiState.Error -> {
@@ -129,7 +129,9 @@ fun PostListLoaded(
     data: List<Post>,
     navController: NavHostController,
     categoryName: String,
-    contentPadding: PaddingValues
+    contentPadding: PaddingValues,
+    parentDocumentId: String,
+    subDocumentId: String
 ) {
     LazyColumn(modifier = Modifier.padding(contentPadding)) {
         data.forEach { postItem ->
@@ -146,7 +148,7 @@ fun PostListLoaded(
                                 indication = rememberRipple(bounded = true),
                                 onClick = {
                                     val jsonPost = Uri.encode(Gson().toJson(postItem))
-                                    navController.navigate("${NavRoutes.PostDetail.route}/$jsonPost")
+                                    navController.navigate("${NavRoutes.PostDetail.route}/$jsonPost/$parentDocumentId/$subDocumentId")
                                 }
                             )) {
                         Card(

@@ -9,16 +9,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,7 +30,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.google.gson.Gson
 import kz.example.diplomapp.R
+import kz.example.diplomapp.common.NavRoutes
 import kz.example.diplomapp.domain.model.Post
 import kz.example.diplomapp.ui.theme.CallBtnColor
 import kz.example.diplomapp.ui.theme.PriceColor
@@ -36,7 +41,9 @@ import java.text.NumberFormat
 @Composable
 fun PostDetail(
     navHostController: NavHostController,
-    postItem: Post
+    postItem: Post,
+    parentCategoryId: String,
+    subCategoryId: String
 ) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
@@ -151,6 +158,21 @@ fun PostDetail(
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(text = stringResource(R.string.call), color = Color.White)
+                    }
+                    Spacer(modifier = Modifier.padding(top = 8.dp))
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ClickableText(
+                            text = AnnotatedString(text = stringResource(id = R.string.edit)),
+                            modifier = Modifier
+                                .padding(8.dp),
+                            onClick = {
+                                val jsonPost = Uri.encode(Gson().toJson(postItem))
+                                navHostController.navigate("${NavRoutes.PostEdit.route}/$jsonPost/$parentCategoryId/$subCategoryId")
+                            }
+                        )
                     }
                     Spacer(modifier = Modifier.padding(bottom = 60.dp))
                 }

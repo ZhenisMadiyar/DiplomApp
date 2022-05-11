@@ -32,10 +32,32 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun createPost(categoryDocumentId: String, subCategoryDocumentId: String, postData: HashMap<String, Any>) {
+    fun createPost(
+        categoryDocumentId: String,
+        subCategoryDocumentId: String,
+        postData: HashMap<String, Any>
+    ) {
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             repo.createPost(categoryDocumentId, subCategoryDocumentId, postData)
+                .catch {
+                    _uiState.value = UiState.Error(it)
+                }
+                .collect { isSuccessAdded ->
+                    _uiState.value = UiState.Success(isSuccessAdded)
+                }
+        }
+    }
+
+    fun editPost(
+        categoryDocumentId: String,
+        subCategoryDocumentId: String,
+        postDocumentId: String,
+        postData: HashMap<String, Any>
+    ) {
+        _uiState.value = UiState.Loading
+        viewModelScope.launch {
+            repo.editPost(categoryDocumentId, subCategoryDocumentId, postDocumentId, postData)
                 .catch {
                     _uiState.value = UiState.Error(it)
                 }

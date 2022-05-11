@@ -21,9 +21,17 @@ sealed class NavRoutes(val route: String, val icon: ImageVector? = null, val tit
         const val EXTRA_PARENT_CATEGORY_ID = "parent_category_id"
     }
     object PostDetail: NavRoutes("post_detail") {
-        const val routeWithArgument: String = "post_detail/{post_item}"
+        const val routeWithArgument: String = "post_detail/{post_item}/{parent_category_id}/{sub_category_id}"
         const val EXTRA_POST_ITEM = "post_item"
+        const val EXTRA_PARENT_CATEGORY_ID = "parent_category_id"
+        const val EXTRA_SUB_CATEGORY_ID = "sub_category_id"
     }
     object PostCreate: NavRoutes("post_create", Icons.Default.AddCircle, "Создать")
     object Favourites: NavRoutes("favourite_posts", Icons.Default.Favorite, "Избранные")
+    object PostEdit: NavRoutes("post_edit") {
+        const val routeWithArgument: String = "post_edit/{post_item}/{parent_category_id}/{sub_category_id}"
+        const val EXTRA_POST_ITEM = "post_item"
+        const val EXTRA_PARENT_CATEGORY_ID = "parent_category_id"
+        const val EXTRA_SUB_CATEGORY_ID = "sub_category_id"
+    }
 }

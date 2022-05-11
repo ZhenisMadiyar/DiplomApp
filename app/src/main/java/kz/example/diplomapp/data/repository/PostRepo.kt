@@ -5,5 +5,16 @@ import kz.example.diplomapp.domain.model.Post
 
 interface PostRepo {
     suspend fun getPostList(categoryId: String, parentDocumentId: String): Flow<List<Post>>
-    suspend fun createPost(documentId: String, subDocumentId: String, postData: HashMap<String, Any>): Flow<Boolean>
+    suspend fun createPost(
+        documentId: String,
+        subDocumentId: String,
+        postData: HashMap<String, Any>
+    ): Flow<Boolean>
+
+    suspend fun editPost(
+        documentId: String,
+        subDocumentId: String,
+        postDocumentId: String,
+        postData: HashMap<String, Any>
+    ): Flow<Boolean>
 }
